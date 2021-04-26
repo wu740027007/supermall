@@ -29,13 +29,16 @@ export default {
   },
   methods:{
     scrollTo(x, y, time=300){
-      this.scroll.scrollTo(x, y, time)
+      this.scroll && this.scroll.scrollTo(x, y, time)
     },
     finishPullUp(){
       this.scroll.finishPullUp()
     },
     refresh(){
-      this.scroll.refresh()
+      this.scroll && this.scroll.refresh()
+    },
+    getScrollY(){
+      return this.scroll ? this.scroll.y : 0
     }
 
   },
@@ -43,6 +46,7 @@ export default {
     //1.创建BScroll对象
     this.scroll = new BScroll(this.$refs.wrapper,{
       observeDOM:true,
+      observeImage:true,
       //控制类似于div这种元素是否可以点击
       click:true,
       probeType: this.probeType,
@@ -50,16 +54,19 @@ export default {
     })
 
     //2.监听滚动的位置
+    if (this.probeType ===2 || this.probeType === 3){
     this.scroll.on('scroll',(positon) => {
       // console.log(positon);
       this.$emit('scroll',positon)
     })
+    }
 
-    //3.监听上拉事件
+    //3.监听scroll滚动到底部
+    if(this.pullUpLoad){
    this.scroll.on('pullingUp',() => {
      this.$emit('pullingUp')
    })
-
+     }
   }
 }
 </script>
