@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav">
-      <div slot="center">购物街</div>
+      <div slot="center">购物街(个人练习项目)</div>
     </nav-bar>
     <tab-control
       :titles="['流行','新款','精选']" @tabClick="tabClick"
@@ -180,7 +180,7 @@ export default {
     * */
     getHomeMultidata(){
       getHomeMultidata().then(res => {
-        console.log(res);
+        // console.log(res);
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
       })

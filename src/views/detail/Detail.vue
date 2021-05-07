@@ -15,6 +15,7 @@
     <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
 
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+
   </div>
 </template>
 
@@ -34,6 +35,8 @@ import BackTop from 'components/content/backTop/BackTop'
 
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList";
+// import Toast from "components/common/toast/Toast";
+
 
 import {getDetail,Goods,Shop,getRecommend} from "network/detail";
 import {GoodsParam} from "network/detail";
@@ -58,6 +61,8 @@ export default {
       themeTopYs:[],
       getThemeTopY:null,
       currentIndex:0,
+      // message:'',
+      // show:false
 
 
     }
@@ -73,7 +78,8 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
-    BackTop
+    BackTop,
+    // Toast
 
 
   },
@@ -208,8 +214,18 @@ export default {
       product.iid = this.iid;
 
       //2.将商品添加到购物车
-    // this.$store.commit('addCart',product)
-      this.$store.dispatch('addCart',product)
+      // this.$store.commit('addCart',product)
+      //可以使用{mapActions}进行映射,然后使用...mapActions,就可以直接通过this.addCart进行调用
+      this.$store.dispatch('addCart',product).then(res => {
+        // this.show = true;
+        // this.message = res
+        // setTimeout(() => {
+        //   this.show = false;
+        //   this.message = ''
+        // },1500)
+        // // console.log(res);
+        this.$toast.show(res,1500)
+      })
     }
 
 

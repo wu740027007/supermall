@@ -1,6 +1,6 @@
 <template>
  <div class="goods-item" @click="itemClick">
-   <img :src="showImage" alt="" @load="imageLoad">
+   <img v-lazy="showImage" alt="" @load="imageLoad">
    <div class="goods-info">
      <p>{{goodsItem.title}}</p>
      <span class="price">{{goodsItem.price}}</span>
@@ -24,13 +24,28 @@ export default {
     imageLoad(){
       this.$bus.$emit('itemImageLoad')
     },
-    itemClick(){
-      this.$router.push('/detail/' + this.goodsItem.iid)
+    itemClick() {
+      // const iid = this.goodsItem.iid ? this.goodsItem.iid : this.goodsItem.item_id
+      const iid = this.goodsItem.iid ? this.goodsItem.iid : '1m8k4ps'
+      // console.log('iid:', iid)
+      // console.log('this.$router', this.$route.path)
+      if (this.$route.path.indexOf('/detail') !== -1) {
+        this.$router.replace('/detail/' + iid)
+        // console.log('if')
+        this.$router.go(0)
+      } else {
+        this.$router.push('/detail/' + iid)
+        // console.log('else')
+      }
     }
   },
   computed:{
-    showImage(){
-      return this.goodsItem.image || this.goodsItem.show.img
+    showImage() {
+      if (this.goodsItem.img !== undefined) {
+        return this.goodsItem.img
+      } else {
+        return this.goodsItem.image || this.goodsItem.show.img || this.goodsItem.img
+      }
     }
   }
 }
